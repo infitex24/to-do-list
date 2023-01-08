@@ -1,2 +1,2 @@
 # to-do-list
-10 tasks for Android academy by SafetyHeads
+10 tasks by Michał Wójcik for Android academy by SafetyHeads
