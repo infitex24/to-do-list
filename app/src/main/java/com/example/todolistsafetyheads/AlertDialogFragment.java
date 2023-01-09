@@ -2,7 +2,6 @@ package com.example.todolistsafetyheads;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,10 +10,10 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class AlertDialogFragment extends AppCompatDialogFragment {
 
-    int size;
+    int position;
 
-    AlertDialogFragment(int size) {
-        this.size=size;
+    AlertDialogFragment(int position) {
+        this.position=position;
     }
 
     @NonNull
@@ -28,9 +27,8 @@ public class AlertDialogFragment extends AppCompatDialogFragment {
         alert.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.cancel());
 
         alert.setPositiveButton("YES", (dialogInterface, i) -> {
-            MainActivity.itemList.remove(size);
-            MainActivity.arrayAdapter.notifyDataSetChanged();
-            FileHelper.writeData(MainActivity.itemList, getActivity());
+            MainActivity.arrayItemList.remove(position);
+            FileHelper.writeData(MainActivity.arrayItemList, getActivity());
 
         });
 
