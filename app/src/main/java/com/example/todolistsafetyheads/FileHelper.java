@@ -22,6 +22,7 @@ public class FileHelper {
             ObjectOutputStream oas = new ObjectOutputStream(fos);
             oas.writeObject(item);
         } catch (FileNotFoundException e) {
+            Toast.makeText(context.getApplicationContext(), "file " + FILENAME + " not found", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,6 +37,7 @@ public class FileHelper {
             ObjectInputStream ois = new ObjectInputStream(fis);
             itemList = (ArrayList<String>) ois.readObject();
         } catch (FileNotFoundException e) {
+            Toast.makeText(context.getApplicationContext(), "file " + FILENAME + " not found", Toast.LENGTH_LONG).show();
             itemList = new ArrayList<>();
             e.printStackTrace();
         } catch (IOException e) {
