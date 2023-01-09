@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoListSafetyHeads"
         tools:targetApi="31">
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -25,6 +31,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
     </application>
 
 </manifest>

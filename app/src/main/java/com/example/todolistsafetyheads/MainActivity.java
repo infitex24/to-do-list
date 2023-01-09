@@ -1,10 +1,15 @@
 package com.example.todolistsafetyheads;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextItem;
     Button buttonAdd;
     RecyclerView recyclerView;
+    public static boolean writeData = false;
 
     public static ArrayList<String> arrayItemList = new ArrayList<>();
     ArrayList<Item> itemList = new ArrayList<Item>();
@@ -32,12 +38,17 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd = findViewById(R.id.buttonAdd);
         recyclerView = findViewById(R.id.recyclerView);
 
-        arrayItemList = FileHelper.readData(this);
+        writeData=false;
+        startMyService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         for (String text: arrayItemList) {
             itemList.add(new Item(text, R.drawable.ic_baseline_delete_24));
         }
-
         buildRecyclerView();
         setButtons();
     }
@@ -77,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
     public void removeItem(int position) {
         itemList.remove(position);
         arrayItemList.remove(position);
-        FileHelper.writeData(arrayItemList, getApplicationContext());
+        writeData=true;
+        startMyService();
         mAdapter.notifyItemRemoved(position);
     }
 
@@ -91,11 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 arrayItemList.add(itemName);
                 editTextItem.setText("");
 
-                FileHelper.writeData(arrayItemList, getApplicationContext());
-
+                writeData=true;
+                startMyService();
                 int position = (itemList.size() + 1);
                 insertItem(position, itemName);
             }
         });
+    }
+
+    public void startMyService(){
+        Intent i = new Intent(this, MyService.class);
+        startService(i);
     }
 }
