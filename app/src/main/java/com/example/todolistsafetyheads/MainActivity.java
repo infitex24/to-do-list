@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
     EditText item;
     Button add;
     ListView listview;
-    ArrayList<String> itemList = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
+    public static ArrayList<String> itemList = new ArrayList<>();
+    public static ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +45,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listview.setOnItemClickListener((adapterView, view, i, l) -> {
-            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-            alert.setTitle("");
-            alert.setMessage("Do you wanna delete this item from list?");
-            alert.setCancelable(false);
-
-            alert.setNegativeButton("No", (dialogInterface, i12) -> dialogInterface.cancel());
-
-            alert.setPositiveButton("Yes", (dialogInterface, i1) -> {
-                itemList.remove(i);
-                arrayAdapter.notifyDataSetChanged();
-                FileHelper.writeData(itemList, getApplicationContext());
-            });
-
-            AlertDialog alertDialog = alert.create();
-            alertDialog.show();
+            openDialog(i);
         });
+    }
+
+    private void openDialog(int size){
+        AlertDialogFragment alertDialogFragment = new AlertDialogFragment(size);
+        alertDialogFragment.show(getSupportFragmentManager(), "alertDialogFragment");
     }
 }
