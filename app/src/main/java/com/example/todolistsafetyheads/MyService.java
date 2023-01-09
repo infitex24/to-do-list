@@ -1,15 +1,17 @@
 package com.example.todolistsafetyheads;
 
-import static com.example.todolistsafetyheads.MainActivity.arrayItemList;
 import static com.example.todolistsafetyheads.MainActivity.writeData;
 
-import android.app.IntentService;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
+
 
 public class MyService extends Service {
 
@@ -22,18 +24,24 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("SERVICE", String.valueOf(1));
+
+        ArrayList<Item> tempItemList = new ArrayList<>();
+
+        Intent mIntent = new Intent(this, MyService.class);
+        Bundle extras = mIntent.getBundleExtra("itemList");
+        tempItemList = (ArrayList<Item>) extras.getSerializable("ARRAYLIST");
+
         if (writeData){
-            FileHelper.writeData(arrayItemList, getApplicationContext());
-            Log.d("SERVICE", String.valueOf(2));
+            SharedPreferencesHelper.writeListInPref(getApplicationContext(), tempItemList);
         }
         else {
-            arrayItemList = FileHelper.readData(this);
-            Log.d("SERVICE", String.valueOf(arrayItemList.size()));
+            tempItemList = SharedPreferencesHelper.readListFromPref(this);
         }
 
         stopSelf();

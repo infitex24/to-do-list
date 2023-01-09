@@ -8,12 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonAdd;
     RecyclerView recyclerView;
     public static boolean writeData = false;
-
-    public static ArrayList<String> arrayItemList = new ArrayList<>();
-    ArrayList<Item> itemList = new ArrayList<Item>();
+    public ArrayList<Item> itemList = new ArrayList<Item>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         buttonAdd = findViewById(R.id.buttonAdd);
         recyclerView = findViewById(R.id.recyclerView);
 
+        itemList.add(new Item("XD", R.drawable.ic_baseline_delete_24));
+
         writeData=false;
         startMyService();
     }
@@ -46,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        for (String text: arrayItemList) {
-            itemList.add(new Item(text, R.drawable.ic_baseline_delete_24));
-        }
         buildRecyclerView();
         setButtons();
     }
@@ -87,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void removeItem(int position) {
         itemList.remove(position);
-        arrayItemList.remove(position);
         writeData=true;
         startMyService();
+
         mAdapter.notifyItemRemoved(position);
     }
 
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String itemName = editTextItem.getText().toString();
-                arrayItemList.add(itemName);
+                itemList.add(new Item(itemName, R.drawable.ic_baseline_delete_24));
                 editTextItem.setText("");
 
                 writeData=true;
@@ -113,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void startMyService(){
         Intent i = new Intent(this, MyService.class);
+
+        Bundle args = new Bundle();
+        args.putSerializable("ARRAYLIST",(Serializable) itemList);
+        i.putExtra("itemList",args);
         startService(i);
     }
 }

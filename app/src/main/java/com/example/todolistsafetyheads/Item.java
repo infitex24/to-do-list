@@ -1,6 +1,8 @@
 package com.example.todolistsafetyheads;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
 
     private String message;
     private int image;

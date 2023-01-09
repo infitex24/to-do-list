@@ -27,8 +27,8 @@ public class AlertDialogFragment extends AppCompatDialogFragment {
         alert.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.cancel());
 
         alert.setPositiveButton("YES", (dialogInterface, i) -> {
-            MainActivity.arrayItemList.remove(position);
-            FileHelper.writeData(MainActivity.arrayItemList, getActivity());
+//            MainActivity.arrayItemList.remove(position);
+//            FileHelper.writeData(MainActivity.arrayItemList, getActivity());
 
         });
 
